@@ -889,6 +889,273 @@
             opacity: 0.8;
         }
 
+        /* Scroll Animation Keyframes */
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        @keyframes rotateIn {
+            from {
+                opacity: 0;
+                transform: rotate(-10deg) scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: rotate(0deg) scale(1);
+            }
+        }
+
+        @keyframes fadeInGlow {
+            0% {
+                opacity: 0;
+                text-shadow: 0 0 0 rgba(100, 200, 255, 0);
+            }
+            50% {
+                text-shadow: 0 0 10px rgba(100, 200, 255, 0.5);
+            }
+            100% {
+                opacity: 1;
+                text-shadow: 0 0 20px rgba(100, 200, 255, 0.3);
+            }
+        }
+
+        /* Scroll Animation Classes */
+        .animate-on-scroll {
+            opacity: 0;
+            transform: translateY(60px);
+        }
+
+        .animate-on-scroll.in-view {
+            animation: slideInUp 0.7s ease-out forwards;
+        }
+
+        /* Альтернирующие анимации для карточек */
+        .section-card.animate-on-scroll.in-view {
+            animation: dropBounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        .section-card:nth-child(even).animate-on-scroll.in-view {
+            animation: dropBounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        .section-card:nth-child(odd).animate-on-scroll.in-view {
+            animation: dropBounce 0.8s cubic-bezier(0.68, -0.55, 0.265, 1.55) forwards;
+        }
+
+        /* Анимации для элементов возможностей */
+        .feature-box.animate-on-scroll.in-view {
+            animation: slideInUp 0.7s ease-out forwards;
+        }
+
+        .feature-box.animate-on-scroll.in-view {
+            animation-delay: calc(var(--delay, 0) * 1s);
+        }
+
+        /* Анимации для секций */
+        .features-section.animate-on-scroll.in-view,
+        .stats.animate-on-scroll.in-view {
+            animation: scaleIn 0.8s ease-out forwards;
+        }
+
+        /* Анимации для заголовков */
+        .section-title.animate-on-scroll.in-view,
+        .subsection-title.animate-on-scroll.in-view {
+            animation: slideInLeft 0.7s ease-out forwards;
+        }
+
+        /* Анимация для футера */
+        footer.animate-on-scroll.in-view {
+            animation: slideInUp 0.8s ease-out forwards;
+        }
+
+        /* Стильное свечение при появлении */
+        .animate-on-scroll.in-view[data-glow="true"] {
+            animation: fadeInGlow 1s ease-out forwards !important;
+        }
+
+        .animate-on-scroll-left {
+            opacity: 0;
+            transform: translateX(-60px);
+        }
+
+        .animate-on-scroll-left.in-view {
+            animation: slideInLeft 0.8s ease-out forwards;
+        }
+
+        .animate-on-scroll-right {
+            opacity: 0;
+            transform: translateX(60px);
+        }
+
+        .animate-on-scroll-right.in-view {
+            animation: slideInRight 0.8s ease-out forwards;
+        }
+
+        .animate-on-scroll-scale {
+            opacity: 0;
+            transform: scale(0.8);
+        }
+
+        .animate-on-scroll-scale.in-view {
+            animation: scaleIn 0.8s ease-out forwards;
+        }
+
+        @keyframes slideInUp {
+            from {
+                opacity: 0;
+                transform: translateY(40px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes dropBounce {
+            0% {
+                opacity: 0;
+                transform: translateY(-80px) scale(0.95);
+            }
+            25% {
+                opacity: 1;
+                transform: translateY(-10px) scale(1.01);
+            }
+            50% {
+                transform: translateY(0px) scale(1);
+            }
+            65% {
+                transform: translateY(-5px) scale(1.005);
+            }
+            80% {
+                transform: translateY(0px) scale(1);
+            }
+            100% {
+                opacity: 1;
+                transform: translateY(0px) scale(1);
+            }
+        }
+
+        @keyframes slideInLeft {
+            from {
+                opacity: 0;
+                transform: translateX(-60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes slideInRight {
+            from {
+                opacity: 0;
+                transform: translateX(60px);
+            }
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        @keyframes scaleIn {
+            from {
+                opacity: 0;
+                transform: scale(0.8);
+            }
+            to {
+                opacity: 1;
+                transform: scale(1);
+            }
+        }
+
+        .section-card {
+            animation-delay: 0.1s;
+        }
+
+        .section-card:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .section-card:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .section-card:nth-child(4) {
+            animation-delay: 0.2s;
+        }
+
+        .section-card:nth-child(5) {
+            animation-delay: 0.3s;
+        }
+
+        .section-card:nth-child(6) {
+            animation-delay: 0.4s;
+        }
+
+        .feature-box {
+            animation-delay: 0.1s;
+        }
+
+        .feature-box:nth-child(2) {
+            animation-delay: 0.2s;
+        }
+
+        .feature-box:nth-child(3) {
+            animation-delay: 0.3s;
+        }
+
+        .feature-box:nth-child(4) {
+            animation-delay: 0.2s;
+        }
+
+        .feature-box:nth-child(5) {
+            animation-delay: 0.3s;
+        }
+
+        .feature-box:nth-child(6) {
+            animation-delay: 0.4s;
+        }
+
         @media (max-width: 768px) {
             header {
                 padding: 80px 20px 60px !important;
@@ -984,11 +1251,11 @@
 <body>
     <!-- Header -->
     <header>
-        <h1>📚 История и Техника</h1>
+        <h1>Россия. История, которой мы гордимся.</h1>
         <p class="subtitle">Изучай историю, исследуй технику, развивайся каждый день через игру и соревнование</p>
         
         <div class="hero-buttons">
-            <a href="https://t.me/your_bot_username" class="btn-primary">✨ Открыть бота в Telegram</a>
+            <a href="https://t.me/Hist0ry_of_Russia_bot" class="btn-primary">Открыть бота в Telegram</a>
         </div>
 
         <div class="hero-stats">
@@ -1021,7 +1288,7 @@
         </div>
 
         <!-- Основные разделы -->
-        <h2 class="section-title">Что ты найдешь здесь?</h2>
+        <h2 class="section-title animate-on-scroll">Что ты найдешь здесь?</h2>
         <div class="sections-grid">
             <div class="section-card">
                 <div class="section-emoji">📅</div>
@@ -1091,7 +1358,7 @@
         </div>
 
         <!-- Возможности бота -->
-        <div class="features-section">
+        <div class="features-section animate-on-scroll">
             <h2>🚀 Как это работает?</h2>
             <div class="feature-grid">
                 <div class="feature-box">
@@ -1133,7 +1400,7 @@
         </div>
 
         <!-- CTA -->
-        <div class="features-section" style="text-align: center; background: rgba(100, 200, 255, 0.15); border: 1.5px solid rgba(100, 200, 255, 0.4);">
+        <div class="features-section animate-on-scroll" style="text-align: center; background: rgba(100, 200, 255, 0.15); border: 1.5px solid rgba(100, 200, 255, 0.4);">
             <h2 style="margin-bottom: 20px;">🚀 Готовы начать?</h2>
             <p style="color: #b0b0d0; font-size: 1.1em; margin-bottom: 30px;">Присоединитесь к тысячам пользователей, которые уже обучаются с нашим ботом</p>
             <a href="https://t.me/your_bot_username" class="btn-primary">📱 Запустить в Telegram</a>
@@ -1153,5 +1420,66 @@
             </div>
         </div>
     </footer>
+
+    <script>
+        // Intersection Observer для анимаций при прокрутке
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // Добавляем анимации к элементам при загрузке
+        window.addEventListener('load', () => {
+            // Карточки разделов с cascading задержкой
+            document.querySelectorAll('.section-card').forEach((card, index) => {
+                card.classList.add('animate-on-scroll');
+                card.style.setProperty('--animation-delay', (index * 0.12) + 's');
+                card.style.animationDelay = (index * 0.12) + 's';
+                observer.observe(card);
+            });
+
+            // Блоки возможностей
+            document.querySelectorAll('.feature-box').forEach((box, index) => {
+                box.classList.add('animate-on-scroll');
+                box.style.setProperty('--delay', index * 0.1 + 's');
+                observer.observe(box);
+            });
+
+            // Секции с возможностями
+            document.querySelectorAll('.features-section').forEach(section => {
+                section.classList.add('animate-on-scroll');
+                observer.observe(section);
+            });
+
+            // Заголовки разделов
+            document.querySelectorAll('.section-title').forEach(title => {
+                title.classList.add('animate-on-scroll');
+                observer.observe(title);
+            });
+        });
+
+        // Smooth scroll для якорей
+        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+            anchor.addEventListener('click', function (e) {
+                e.preventDefault();
+                const target = document.querySelector(this.getAttribute('href'));
+                if (target) {
+                    target.scrollIntoView({
+                        behavior: 'smooth',
+                        block: 'start'
+                    });
+                }
+            });
+        });
+    </script>
 </body>
 </html>
