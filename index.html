@@ -1521,19 +1521,33 @@
                 observer.observe(box);
             });
 
-            // Секции с возможностями (только на десктопе активно)
-            if (!isMobile) {
-                document.querySelectorAll('.features-section').forEach(section => {
+            // Секции с возможностями
+            document.querySelectorAll('.features-section').forEach(section => {
+                if (isMobile) {
+                    // На мобильных сразу показываем без анимации
+                    section.classList.add('in-view');
+                } else {
                     section.classList.add('animate-on-scroll');
                     observer.observe(section);
-                });
-            }
+                }
+            });
 
             // Заголовки разделов
             document.querySelectorAll('.section-title').forEach(title => {
                 title.classList.add('animate-on-scroll');
                 observer.observe(title);
             });
+
+            // Footer
+            const footer = document.querySelector('footer');
+            if (footer) {
+                if (isMobile) {
+                    footer.classList.add('in-view');
+                } else {
+                    footer.classList.add('animate-on-scroll');
+                    observer.observe(footer);
+                }
+            }
         });
 
         // Smooth scroll для якорей
