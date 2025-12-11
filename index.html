@@ -18,6 +18,8 @@
             min-height: 100vh;
             position: relative;
             overflow-x: hidden;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
         }
 
         body::before {
@@ -114,6 +116,7 @@
             border: 1px solid rgba(100, 200, 255, 0.2);
             transition: all 0.3s;
             cursor: pointer;
+            will-change: transform;
         }
 
         .section-card:hover {
@@ -1194,6 +1197,31 @@
                 bottom: 20px;
                 font-size: 1.2em;
             }
+
+            /* Отключаем backdrop-filter на мобильных для оптимизации */
+            .features-section,
+            .section-card,
+            .feature-box,
+            .stat-box,
+            .tech-card,
+            .hero-stat {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+            }
+
+            header {
+                -webkit-backdrop-filter: none !important;
+                backdrop-filter: none !important;
+            }
+
+            /* Отключаем сложные анимации на мобильных */
+            .btn-primary {
+                animation: none !important;
+            }
+
+            h1 {
+                animation: fadeInDown 1s ease-out !important;
+            }
         }
 
         @media (max-width: 480px) {
@@ -1238,6 +1266,43 @@
 
             .scroll-indicator {
                 display: none;
+            }
+
+            /* Агрессивная оптимизация для маленьких экранов */
+            body::before {
+                display: none !important;
+            }
+
+            header::after {
+                display: none !important;
+            }
+
+            .features-section,
+            .section-card,
+            .feature-box,
+            .stat-box,
+            .tech-card,
+            .hero-stat,
+            footer {
+                backdrop-filter: none !important;
+                -webkit-backdrop-filter: none !important;
+                background: rgba(30, 40, 70, 0.7) !important;
+            }
+
+            /* Упрощаем анимации */
+            .btn-primary::before {
+                display: none !important;
+            }
+
+            .section-card.animate-on-scroll.in-view {
+                animation: scaleUpBounce 0.6s ease-out forwards !important;
+            }
+
+            /* Отключаем blur эффект */
+            header {
+                background: rgba(20, 25, 50, 0.8) !important;
+                -webkit-backdrop-filter: none !important;
+                backdrop-filter: none !important;
             }
         }
     </style>
@@ -1416,18 +1481,23 @@
     </footer>
 
     <script>
-        // Intersection Observer для анимаций при прокрутке
+        // Проверяем мобильное устройство
+        const isMobile = window.innerWidth <= 768;
+
+        // Оптимизированный Intersection Observer для мобильных
         const observerOptions = {
-            threshold: 0.1,
-            rootMargin: '0px 0px -50px 0px'
+            threshold: isMobile ? 0.15 : 0.1,
+            rootMargin: isMobile ? '0px 0px -30px 0px' : '0px 0px -50px 0px'
         };
 
         const observer = new IntersectionObserver((entries) => {
-            entries.forEach(entry => {
-                if (entry.isIntersecting) {
-                    entry.target.classList.add('in-view');
-                    observer.unobserve(entry.target);
-                }
+            requestAnimationFrame(() => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('in-view');
+                        observer.unobserve(entry.target);
+                    }
+                });
             });
         }, observerOptions);
 
@@ -1436,8 +1506,11 @@
             // Карточки разделов с cascading задержкой
             document.querySelectorAll('.section-card').forEach((card, index) => {
                 card.classList.add('animate-on-scroll');
-                card.style.setProperty('--animation-delay', (index * 0.12) + 's');
-                card.style.animationDelay = (index * 0.12) + 's';
+                
+                // На мобильных уменьшаем задержку
+                const delay = isMobile ? (index * 0.08) : (index * 0.12);
+                card.style.setProperty('--animation-delay', delay + 's');
+                card.style.animationDelay = delay + 's';
                 observer.observe(card);
             });
 
@@ -1448,11 +1521,13 @@
                 observer.observe(box);
             });
 
-            // Секции с возможностями
-            document.querySelectorAll('.features-section').forEach(section => {
-                section.classList.add('animate-on-scroll');
-                observer.observe(section);
-            });
+            // Секции с возможностями (только на десктопе активно)
+            if (!isMobile) {
+                document.querySelectorAll('.features-section').forEach(section => {
+                    section.classList.add('animate-on-scroll');
+                    observer.observe(section);
+                });
+            }
 
             // Заголовки разделов
             document.querySelectorAll('.section-title').forEach(title => {
@@ -1474,6 +1549,14 @@
                 }
             });
         });
+
+        // Отключаем глобальные фильтры на мобильных для производительности
+        if (isMobile) {
+            // Убираем фоновые градиенты на очень слабых устройствах
+            if (window.innerWidth < 480) {
+                document.body.style.background = '#0f0f1e';
+            }
+        }
     </script>
 </body>
 </html>
