@@ -1,0 +1,867 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>История и Техника - Telegram Бот</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #0f0f1e 0%, #1a0f2e 50%, #0f1f2e 100%);
+            color: #e0e0e0;
+            min-height: 100vh;
+            position: relative;
+            overflow-x: hidden;
+        }
+
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: radial-gradient(circle at 20% 50%, rgba(100, 200, 255, 0.1) 0%, transparent 50%),
+                        radial-gradient(circle at 80% 80%, rgba(200, 100, 255, 0.1) 0%, transparent 50%);
+            pointer-events: none;
+            z-index: -1;
+        }
+
+        header {
+            background: rgba(20, 25, 50, 0.6);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-bottom: 1px solid rgba(100, 200, 255, 0.2);
+            color: white;
+            padding: 60px 20px;
+            text-align: center;
+        }
+
+        h1 {
+            font-size: 3.5em;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #64c8ff 0%, #ff64e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .subtitle {
+            font-size: 1.2em;
+            opacity: 0.85;
+            margin-bottom: 30px;
+            color: #b0b0d0;
+        }
+
+        .btn-primary {
+            display: inline-block;
+            background: rgba(100, 200, 255, 0.2);
+            border: 1.5px solid rgba(100, 200, 255, 0.5);
+            color: #64c8ff;
+            padding: 15px 40px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            font-size: 1.1em;
+            transition: all 0.3s;
+            backdrop-filter: blur(10px);
+        }
+
+        .btn-primary:hover {
+            background: rgba(100, 200, 255, 0.3);
+            border-color: rgba(100, 200, 255, 0.8);
+            transform: translateY(-2px);
+            box-shadow: 0 8px 25px rgba(100, 200, 255, 0.3);
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 50px auto;
+            padding: 0 20px;
+        }
+
+        .section-title {
+            text-align: center;
+            font-size: 2.5em;
+            background: linear-gradient(135deg, #64c8ff 0%, #ff64e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 60px 0 40px;
+            font-weight: 700;
+        }
+
+        .sections-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 30px;
+            margin-bottom: 50px;
+        }
+
+        .section-card {
+            background: rgba(30, 40, 70, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 30px;
+            border: 1px solid rgba(100, 200, 255, 0.2);
+            transition: all 0.3s;
+            cursor: pointer;
+        }
+
+        .section-card:hover {
+            transform: translateY(-8px);
+            background: rgba(30, 40, 70, 0.7);
+            border-color: rgba(100, 200, 255, 0.5);
+            box-shadow: 0 20px 40px rgba(100, 200, 255, 0.15);
+        }
+
+        .section-emoji {
+            font-size: 3em;
+            margin-bottom: 15px;
+        }
+
+        .section-card h3 {
+            font-size: 1.5em;
+            margin-bottom: 12px;
+            background: linear-gradient(135deg, #64c8ff 0%, #ff64e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .section-card p {
+            color: #b0b0d0;
+            line-height: 1.6;
+            font-size: 1em;
+        }
+
+        .features-section {
+            background: rgba(30, 40, 70, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 50px;
+            margin: 40px 0;
+            border: 1px solid rgba(100, 200, 255, 0.2);
+        }
+
+        .features-section h2 {
+            background: linear-gradient(135deg, #64c8ff 0%, #ff64e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .feature-box {
+            text-align: center;
+        }
+
+        .feature-icon {
+            font-size: 2.5em;
+            margin-bottom: 15px;
+        }
+
+        .feature-box h4 {
+            color: #64c8ff;
+            margin-bottom: 10px;
+            font-size: 1.2em;
+            font-weight: 600;
+        }
+
+        .feature-box p {
+            color: #b0b0d0;
+            line-height: 1.6;
+        }
+
+        .tech-examples {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 25px;
+            margin-top: 30px;
+        }
+
+        .tech-card {
+            background: rgba(40, 50, 90, 0.4);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(100, 200, 255, 0.25);
+            color: #e0e0e0;
+            padding: 25px;
+            border-radius: 15px;
+            transition: all 0.3s;
+        }
+
+        .tech-card:hover {
+            background: rgba(40, 50, 90, 0.6);
+            border-color: rgba(100, 200, 255, 0.5);
+            box-shadow: 0 15px 35px rgba(100, 200, 255, 0.1);
+        }
+
+        .tech-card h4 {
+            font-size: 1.3em;
+            margin-bottom: 10px;
+            color: #64c8ff;
+            font-weight: 600;
+        }
+
+        .tech-card p {
+            font-size: 0.95em;
+            line-height: 1.5;
+            opacity: 0.85;
+        }
+
+        .stats {
+            background: rgba(30, 40, 70, 0.5);
+            backdrop-filter: blur(20px);
+            -webkit-backdrop-filter: blur(20px);
+            border-radius: 20px;
+            padding: 40px;
+            margin: 40px 0;
+            border: 1px solid rgba(100, 200, 255, 0.2);
+        }
+
+        .stats h2 {
+            background: linear-gradient(135deg, #64c8ff 0%, #ff64e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            font-weight: 700;
+        }
+
+        .stat-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 30px;
+            margin-top: 30px;
+        }
+
+        .stat-box {
+            text-align: center;
+            padding: 30px;
+            background: rgba(100, 200, 255, 0.1);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            color: #64c8ff;
+            border-radius: 15px;
+            border: 1px solid rgba(100, 200, 255, 0.3);
+            transition: all 0.3s;
+        }
+
+        .stat-box:hover {
+            background: rgba(100, 200, 255, 0.15);
+            border-color: rgba(100, 200, 255, 0.6);
+        }
+
+        .stat-number {
+            font-size: 2.5em;
+            font-weight: bold;
+            margin-bottom: 10px;
+            background: linear-gradient(135deg, #64c8ff 0%, #ff64e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+        }
+
+        .stat-label {
+            font-size: 1em;
+            color: #b0b0d0;
+        }
+
+        footer {
+            background: rgba(10, 15, 30, 0.8);
+            backdrop-filter: blur(15px);
+            border-top: 1px solid rgba(100, 200, 255, 0.2);
+            color: white;
+            text-align: center;
+            padding: 30px 20px;
+            margin-top: 60px;
+        }
+
+        footer h3 {
+            background: linear-gradient(135deg, #64c8ff 0%, #ff64e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 15px;
+        }
+
+        .footer-content p {
+            margin: 10px 0;
+            font-size: 1em;
+            color: #b0b0d0;
+        }
+
+        .social-links {
+            margin-top: 15px;
+        }
+
+        .social-links a {
+            color: #64c8ff;
+            text-decoration: none;
+            margin: 0 15px;
+            font-weight: bold;
+            transition: all 0.3s;
+        }
+
+        .social-links a:hover {
+            color: #ff64e0;
+            text-decoration: underline;
+        }
+
+        .subsection-title {
+            font-size: 1.8em;
+            background: linear-gradient(135deg, #64c8ff 0%, #ff64e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 40px 0 20px;
+            font-weight: 700;
+        }
+
+        @media (max-width: 1024px) {
+            .container {
+                padding: 0 15px;
+            }
+
+            h1 {
+                font-size: 2.5em;
+            }
+
+            .section-title {
+                font-size: 2em;
+            }
+
+            .sections-grid {
+                grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+                gap: 20px;
+            }
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 40px 20px;
+            }
+
+            h1 {
+                font-size: 2em;
+            }
+
+            .subtitle {
+                font-size: 1em;
+            }
+
+            .btn-primary {
+                padding: 12px 30px;
+                font-size: 1em;
+            }
+
+            .section-title {
+                font-size: 1.6em;
+                margin: 40px 0 25px;
+            }
+
+            .sections-grid {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .section-card {
+                padding: 20px;
+            }
+
+            .section-emoji {
+                font-size: 2.2em;
+                margin-bottom: 10px;
+            }
+
+            .section-card h3 {
+                font-size: 1.2em;
+                margin-bottom: 8px;
+            }
+
+            .section-card p {
+                font-size: 0.9em;
+            }
+
+            .features-section {
+                padding: 25px;
+                margin: 30px 0;
+            }
+
+            .features-section h2 {
+                font-size: 1.6em;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 20px;
+            }
+
+            .feature-icon {
+                font-size: 2em;
+            }
+
+            .feature-box h4 {
+                font-size: 1.1em;
+            }
+
+            .feature-box p {
+                font-size: 0.9em;
+            }
+
+            .tech-examples {
+                grid-template-columns: 1fr;
+                gap: 15px;
+            }
+
+            .tech-card {
+                padding: 18px;
+            }
+
+            .tech-card h4 {
+                font-size: 1.1em;
+            }
+
+            .tech-card p {
+                font-size: 0.85em;
+            }
+
+            .stats {
+                padding: 25px;
+                margin: 30px 0;
+            }
+
+            .stats h2 {
+                font-size: 1.6em;
+            }
+
+            .stat-grid {
+                grid-template-columns: repeat(2, 1fr);
+                gap: 15px;
+            }
+
+            .stat-box {
+                padding: 20px;
+            }
+
+            .stat-number {
+                font-size: 1.8em;
+            }
+
+            .stat-label {
+                font-size: 0.9em;
+            }
+
+            .subsection-title {
+                font-size: 1.4em;
+                margin: 30px 0 15px;
+            }
+
+            footer {
+                padding: 20px;
+            }
+
+            footer h3 {
+                font-size: 1.3em;
+                margin-bottom: 10px;
+            }
+
+            .footer-content p {
+                font-size: 0.9em;
+                margin: 8px 0;
+            }
+
+            .social-links {
+                margin-top: 10px;
+            }
+
+            .social-links a {
+                margin: 0 10px;
+                font-size: 0.95em;
+            }
+
+            .container {
+                margin: 30px auto;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 30px 15px;
+            }
+
+            h1 {
+                font-size: 1.6em;
+            }
+
+            .subtitle {
+                font-size: 0.9em;
+                margin-bottom: 20px;
+            }
+
+            .btn-primary {
+                padding: 10px 25px;
+                font-size: 0.95em;
+            }
+
+            .container {
+                padding: 0 10px;
+                margin: 20px auto;
+            }
+
+            .section-title {
+                font-size: 1.3em;
+                margin: 30px 0 20px;
+            }
+
+            .sections-grid {
+                gap: 12px;
+            }
+
+            .section-card {
+                padding: 15px;
+            }
+
+            .section-emoji {
+                font-size: 2em;
+            }
+
+            .section-card h3 {
+                font-size: 1.1em;
+            }
+
+            .section-card p {
+                font-size: 0.85em;
+                line-height: 1.5;
+            }
+
+            .features-section {
+                padding: 20px;
+                margin: 20px 0;
+            }
+
+            .features-section h2 {
+                font-size: 1.3em;
+                margin-bottom: 15px;
+            }
+
+            .feature-grid {
+                gap: 15px;
+            }
+
+            .feature-icon {
+                font-size: 1.8em;
+                margin-bottom: 10px;
+            }
+
+            .feature-box h4 {
+                font-size: 1em;
+                margin-bottom: 8px;
+            }
+
+            .feature-box p {
+                font-size: 0.8em;
+            }
+
+            .tech-examples {
+                gap: 12px;
+            }
+
+            .tech-card {
+                padding: 15px;
+            }
+
+            .tech-card h4 {
+                font-size: 1em;
+                margin-bottom: 8px;
+            }
+
+            .tech-card p {
+                font-size: 0.8em;
+            }
+
+            .stats {
+                padding: 20px;
+                margin: 20px 0;
+            }
+
+            .stats h2 {
+                font-size: 1.3em;
+                margin-bottom: 15px;
+            }
+
+            .stat-grid {
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .stat-box {
+                padding: 15px;
+            }
+
+            .stat-number {
+                font-size: 1.5em;
+                margin-bottom: 8px;
+            }
+
+            .stat-label {
+                font-size: 0.85em;
+            }
+
+            .subsection-title {
+                font-size: 1.2em;
+                margin: 20px 0 12px;
+            }
+
+            footer {
+                padding: 15px;
+            }
+
+            footer h3 {
+                font-size: 1.1em;
+                margin-bottom: 8px;
+            }
+
+            .footer-content p {
+                font-size: 0.85em;
+                margin: 6px 0;
+            }
+
+            .social-links {
+                margin-top: 8px;
+            }
+
+            .social-links a {
+                display: inline-block;
+                margin: 5px 8px;
+                font-size: 0.9em;
+            }
+        }
+
+        @media (max-width: 320px) {
+            h1 {
+                font-size: 1.4em;
+            }
+
+            .subtitle {
+                font-size: 0.85em;
+            }
+
+            .btn-primary {
+                padding: 8px 20px;
+                font-size: 0.9em;
+            }
+
+            .section-title {
+                font-size: 1.2em;
+            }
+
+            .section-card h3 {
+                font-size: 1em;
+            }
+
+            .feature-box h4 {
+                font-size: 0.95em;
+            }
+
+            .stat-grid {
+                gap: 10px;
+            }
+        }
+
+        .highlight {
+            background: rgba(100, 200, 255, 0.2);
+            border: 1px solid rgba(100, 200, 255, 0.5);
+            color: #64c8ff;
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header>
+        <h1>📚 История и Техника</h1>
+        <p class="subtitle">Умный Telegram-бот для изучения истории, техники и многого другого</p>
+        <a href="https://t.me/your_bot_username" class="btn-primary">🚀 Запустить бота</a>
+    </header>
+
+    <!-- Main Content -->
+    <div class="container">
+        <!-- Основные разделы -->
+        <h2 class="section-title">Основные разделы</h2>
+        <div class="sections-grid">
+            <div class="section-card">
+                <div class="section-emoji">📅</div>
+                <h3>Даты и события</h3>
+                <p>Исторические события, даты, вехи развития цивилизации. Изучайте ключевые моменты истории в интерактивном формате.</p>
+            </div>
+
+            <div class="section-card">
+                <div class="section-emoji">📘</div>
+                <h3>Термины</h3>
+                <p>Ключевые исторические термины, определения, понятия. Развивайте свой словарный запас и историческую грамотность.</p>
+            </div>
+
+            <div class="section-card">
+                <div class="section-emoji">⚔️</div>
+                <h3>Битвы</h3>
+                <p>Знаменитые сражения и военные операции. Изучайте стратегию, тактику и историческое значение ключевых битв.</p>
+            </div>
+
+            <div class="section-card">
+                <div class="section-emoji">👤</div>
+                <h3>Личности</h3>
+                <p>Выдающиеся исторические деятели, полководцы, государственные деятели. Узнайте об их жизни и вкладе в историю.</p>
+            </div>
+
+            <div class="section-card">
+                <div class="section-emoji">🎖️</div>
+                <h3>Награды</h3>
+                <p>Исторические награды, ордена, медали. Изучайте систему почета и награждения разных эпох и государств.</p>
+            </div>
+
+            <div class="section-card">
+                <div class="section-emoji">🏛️</div>
+                <h3>Реформы</h3>
+                <p>Крупные реформы и преобразования, изменившие ход истории. Понимайте суть политических и социальных изменений.</p>
+            </div>
+
+            <div class="section-card">
+                <div class="section-emoji">🛰️</div>
+                <h3>Техника</h3>
+                <p>Современная и историческая военная техника. Самолеты, танки, корабли - все с подробными характеристиками.</p>
+            </div>
+
+            <div class="section-card">
+                <div class="section-emoji">🔎</div>
+                <h3>Поиск</h3>
+                <p>Быстрый поиск по всем разделам. Найдите нужную информацию за секунды используя мощный поисковик.</p>
+            </div>
+
+            <div class="section-card">
+                <div class="section-emoji">📝</div>
+                <h3>Заметки</h3>
+                <p>Создавайте и сохраняйте личные заметки. Организуйте свое обучение и отслеживайте прогресс.</p>
+            </div>
+
+            <div class="section-card">
+                <div class="section-emoji">▶️</div>
+                <h3>Лента</h3>
+                <p>Персонализированная лента с рекомендациями. Получайте интересный контент на основе ваших предпочтений.</p>
+            </div>
+
+            <div class="section-card">
+                <div class="section-emoji">🏠</div>
+                <h3>Личный кабинет</h3>
+                <p>Статистика, графики активности, streak, уровни, рекомендации. Отслеживайте свой прогресс в обучении.</p>
+            </div>
+        </div>
+
+        <!-- Возможности бота -->
+        <div class="features-section">
+            <h2>✨ Ключевые возможности</h2>
+            <div class="feature-grid">
+                <div class="feature-box">
+                    <div class="feature-icon">📊</div>
+                    <h4>Статистика</h4>
+                    <p>Подробные графики активности и анализ прогресса обучения</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon">⭐</div>
+                    <h4>Уровни и рейтинг</h4>
+                    <p>Система уровней, активные streak, рейтинг пользователей</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon">🎯</div>
+                    <h4>Рекомендации</h4>
+                    <p>Персональные рекомендации на основе ваших интересов</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon">💾</div>
+                    <h4>Заметки</h4>
+                    <p>Сохраняйте важные отрывки и создавайте личные справочники</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon">👥</div>
+                    <h4>Интеграция в чаты</h4>
+                    <p>Интегрируйте бота в групповые чаты для совместного обучения</p>
+                </div>
+
+                <div class="feature-box">
+                    <div class="feature-icon">🔔</div>
+                    <h4>Рассылки</h4>
+                    <p>Настраивайте рассылки контента на удобное вам время</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Статистика -->
+        <div class="stats">
+            <h2>📈 По цифрам</h2>
+            <div class="stat-grid">
+                <div class="stat-box">
+                    <div class="stat-number">11+</div>
+                    <div class="stat-label">Основных разделов</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-number">30+</div>
+                    <div class="stat-label">Единиц техники</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-number">100+</div>
+                    <div class="stat-label">Исторических событий</div>
+                </div>
+
+                <div class="stat-box">
+                    <div class="stat-number">∞</div>
+                    <div class="stat-label">Часов обучения</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- CTA -->
+        <div class="features-section" style="text-align: center; background: rgba(100, 200, 255, 0.15); border: 1.5px solid rgba(100, 200, 255, 0.4);">
+            <h2 style="margin-bottom: 20px;">🚀 Готовы начать?</h2>
+            <p style="color: #b0b0d0; font-size: 1.1em; margin-bottom: 30px;">Присоединитесь к тысячам пользователей, которые уже обучаются с нашим ботом</p>
+            <a href="https://t.me/your_bot_username" class="btn-primary">📱 Запустить в Telegram</a>
+        </div>
+    </div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="footer-content">
+            <h3>История и Техника</h3>
+            <p>Образовательный Telegram-бот для изучения истории, техники и выдающихся личностей</p>
+            <p>© 2025 История и Техника. Все права защищены.</p>
+            <div class="social-links">
+                <a href="https://t.me/your_bot_username">Telegram</a>
+                <a href="mailto:your@email.com">Контакты</a>
+                <a href="#">О разработчике</a>
+            </div>
+        </div>
+    </footer>
+</body>
+</html>
