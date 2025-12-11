@@ -692,152 +692,442 @@
             padding: 2px 6px;
             border-radius: 4px;
         }
+
+        /* Hero Section Styles */
+        header {
+            padding: 120px 20px 100px !important;
+            position: relative;
+            overflow: hidden;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        header::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: radial-gradient(circle at 30% 30%, rgba(100, 200, 255, 0.2) 0%, transparent 50%),
+                        radial-gradient(circle at 70% 70%, rgba(255, 100, 224, 0.2) 0%, transparent 50%);
+            pointer-events: none;
+        }
+
+        header > * {
+            position: relative;
+            z-index: 1;
+        }
+
+        @keyframes fadeInDown {
+            from {
+                opacity: 0;
+                transform: translateY(-50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes fadeInUp {
+            from {
+                opacity: 0;
+                transform: translateY(50px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes pulse {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(100, 200, 255, 0.3), inset 0 0 30px rgba(100, 200, 255, 0.1);
+            }
+            50% {
+                box-shadow: 0 0 80px rgba(100, 200, 255, 0.6), inset 0 0 50px rgba(100, 200, 255, 0.2);
+            }
+        }
+
+        @keyframes glow {
+            0%, 100% {
+                text-shadow: 0 0 20px rgba(100, 200, 255, 0.5), 0 0 40px rgba(255, 100, 224, 0.3);
+            }
+            50% {
+                text-shadow: 0 0 40px rgba(100, 200, 255, 0.8), 0 0 80px rgba(255, 100, 224, 0.5);
+            }
+        }
+
+        @keyframes float {
+            0%, 100% {
+                transform: translateY(0px);
+            }
+            50% {
+                transform: translateY(-20px);
+            }
+        }
+
+        h1 {
+            animation: fadeInDown 1s ease-out, glow 3s ease-in-out infinite;
+            font-size: 5.5em !important;
+            margin-bottom: 30px !important;
+            letter-spacing: -2px;
+            font-weight: 800;
+            line-height: 1.2;
+            max-width: 1000px;
+        }
+
+        .subtitle {
+            animation: fadeInUp 1s ease-out 0.2s both;
+            font-size: 1.5em !important;
+            max-width: 800px;
+            margin-left: auto;
+            margin-right: auto;
+            font-weight: 300;
+            letter-spacing: 0.5px;
+            line-height: 1.8;
+        }
+
+        .hero-buttons {
+            margin-top: 70px;
+            display: flex;
+            flex-direction: column;
+            gap: 25px;
+            align-items: center;
+            animation: fadeInUp 1s ease-out 0.4s both;
+        }
+
+        .btn-primary {
+            animation: pulse 3s ease-in-out infinite;
+            padding: 18px 50px !important;
+            font-size: 1.2em !important;
+            border-radius: 60px;
+            background: linear-gradient(135deg, rgba(100, 200, 255, 0.3) 0%, rgba(255, 100, 224, 0.2) 100%) !important;
+            border: 2px solid rgba(100, 200, 255, 0.6) !important;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: -100%;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            transition: left 0.5s;
+        }
+
+        .btn-primary:hover::before {
+            left: 100%;
+        }
+
+        .btn-primary:hover {
+            animation: none;
+            background: linear-gradient(135deg, rgba(100, 200, 255, 0.5) 0%, rgba(255, 100, 224, 0.4) 100%) !important;
+            border-color: rgba(100, 200, 255, 1) !important;
+            transform: translateY(-5px);
+            box-shadow: 0 20px 60px rgba(100, 200, 255, 0.4);
+        }
+
+        .hero-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 30px;
+            margin-top: 100px;
+            padding-top: 80px;
+            border-top: 2px solid rgba(100, 200, 255, 0.3);
+            animation: fadeInUp 1s ease-out 0.6s both;
+            width: 100%;
+        }
+
+        .hero-stat {
+            text-align: center;
+            padding: 20px;
+            background: rgba(100, 200, 255, 0.08);
+            backdrop-filter: blur(15px);
+            border-radius: 15px;
+            border: 1px solid rgba(100, 200, 255, 0.2);
+            transition: all 0.3s;
+        }
+
+        .hero-stat:hover {
+            background: rgba(100, 200, 255, 0.15);
+            border-color: rgba(100, 200, 255, 0.5);
+            transform: translateY(-10px);
+        }
+
+        .hero-stat-number {
+            font-size: 2.8em;
+            font-weight: 900;
+            background: linear-gradient(135deg, #64c8ff 0%, #ff64e0 100%);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 8px;
+        }
+
+        .hero-stat-label {
+            color: #b0b0d0;
+            font-size: 1.05em;
+            font-weight: 500;
+        }
+
+        .scroll-indicator {
+            position: absolute;
+            bottom: 40px;
+            left: 50%;
+            transform: translateX(-50%);
+            color: #64c8ff;
+            animation: float 2s ease-in-out infinite;
+            font-size: 1.5em;
+            opacity: 0.8;
+        }
+
+        @media (max-width: 768px) {
+            header {
+                padding: 80px 20px 60px !important;
+                min-height: auto;
+            }
+
+            h1 {
+                font-size: 2.8em !important;
+                margin-bottom: 20px !important;
+            }
+
+            .subtitle {
+                font-size: 1.15em !important;
+            }
+
+            .hero-buttons {
+                margin-top: 50px;
+                gap: 15px;
+            }
+
+            .btn-primary {
+                padding: 15px 40px !important;
+                font-size: 1em !important;
+            }
+
+            .hero-stats {
+                margin-top: 60px;
+                padding-top: 50px;
+                grid-template-columns: repeat(3, 1fr);
+                gap: 15px;
+            }
+
+            .hero-stat {
+                padding: 15px;
+            }
+
+            .hero-stat-number {
+                font-size: 2em;
+            }
+
+            .scroll-indicator {
+                bottom: 20px;
+                font-size: 1.2em;
+            }
+        }
+
+        @media (max-width: 480px) {
+            header {
+                padding: 50px 15px 40px !important;
+                min-height: auto;
+            }
+
+            h1 {
+                font-size: 2em !important;
+                margin-bottom: 15px !important;
+            }
+
+            .subtitle {
+                font-size: 1em !important;
+            }
+
+            .hero-buttons {
+                margin-top: 35px;
+                gap: 12px;
+            }
+
+            .btn-primary {
+                padding: 12px 35px !important;
+                font-size: 0.95em !important;
+            }
+
+            .hero-stats {
+                margin-top: 40px;
+                padding-top: 40px;
+                grid-template-columns: 1fr;
+                gap: 12px;
+            }
+
+            .hero-stat {
+                padding: 12px;
+            }
+
+            .hero-stat-number {
+                font-size: 1.8em;
+            }
+
+            .scroll-indicator {
+                display: none;
+            }
+        }
     </style>
 </head>
 <body>
     <!-- Header -->
     <header>
         <h1>📚 История и Техника</h1>
-        <p class="subtitle">Умный Telegram-бот для изучения истории, техники и многого другого</p>
-        <a href="https://t.me/your_bot_username" class="btn-primary">🚀 Запустить бота</a>
+        <p class="subtitle">Изучай историю, исследуй технику, развивайся каждый день через игру и соревнование</p>
+        
+        <div class="hero-buttons">
+            <a href="https://t.me/your_bot_username" class="btn-primary">✨ Открыть бота в Telegram</a>
+        </div>
+
+        <div class="hero-stats">
+            <div class="hero-stat">
+                <div class="hero-stat-number">11+</div>
+                <div class="hero-stat-label">Интересных разделов</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-number">100+</div>
+                <div class="hero-stat-label">Событий и битв</div>
+            </div>
+            <div class="hero-stat">
+                <div class="hero-stat-number">∞</div>
+                <div class="hero-stat-label">Знаний в пути</div>
+            </div>
+        </div>
+
+        <div class="scroll-indicator">↓</div>
     </header>
 
     <!-- Main Content -->
     <div class="container">
+        <!-- Intro Section -->
+        <div class="features-section" style="text-align: center; margin: 60px 0 80px;">
+            <h2 style="margin-bottom: 20px;">Почему это работает?</h2>
+            <p style="font-size: 1.1em; max-width: 800px; margin: 0 auto; color: #b0b0d0;">
+                Бот использует интерактивный формат обучения, который помогает лучше запомнить информацию. 
+                Вы получаете не просто текст, а полную картину: статистику прогресса, рекомендации, графики активности и увлекательный контент.
+            </p>
+        </div>
+
         <!-- Основные разделы -->
-        <h2 class="section-title">Основные разделы</h2>
+        <h2 class="section-title">Что ты найдешь здесь?</h2>
         <div class="sections-grid">
             <div class="section-card">
                 <div class="section-emoji">📅</div>
                 <h3>Даты и события</h3>
-                <p>Исторические события, даты, вехи развития цивилизации. Изучайте ключевые моменты истории в интерактивном формате.</p>
+                <p>Ключевые моменты истории с точными датами. От древних цивилизаций до наших дней. Смотри всю ленту истории в одном месте.</p>
             </div>
 
             <div class="section-card">
                 <div class="section-emoji">📘</div>
-                <h3>Термины</h3>
-                <p>Ключевые исторические термины, определения, понятия. Развивайте свой словарный запас и историческую грамотность.</p>
+                <h3>Термины и определения</h3>
+                <p>Не понимаешь исторические термины? Найди определение любого слова. База знаний для быстрого поиска информации.</p>
             </div>
 
             <div class="section-card">
                 <div class="section-emoji">⚔️</div>
-                <h3>Битвы</h3>
-                <p>Знаменитые сражения и военные операции. Изучайте стратегию, тактику и историческое значение ключевых битв.</p>
+                <h3>Легендарные битвы</h3>
+                <p>От боев древности до современных конфликтов. Узнай стратегию полководцев, причины побед и поражений.</p>
             </div>
 
             <div class="section-card">
                 <div class="section-emoji">👤</div>
-                <h3>Личности</h3>
-                <p>Выдающиеся исторические деятели, полководцы, государственные деятели. Узнайте об их жизни и вкладе в историю.</p>
+                <h3>Великие личности</h3>
+                <p>Цари, полководцы, ученые, деятели искусства. Вдохновляющие истории людей, которые изменили мир.</p>
             </div>
 
             <div class="section-card">
                 <div class="section-emoji">🎖️</div>
-                <h3>Награды</h3>
-                <p>Исторические награды, ордена, медали. Изучайте систему почета и награждения разных эпох и государств.</p>
+                <h3>Награды и ордена</h3>
+                <p>История почестей и наград. Какие медали давали за подвиги? Как устроена система признания?</p>
             </div>
 
             <div class="section-card">
                 <div class="section-emoji">🏛️</div>
-                <h3>Реформы</h3>
-                <p>Крупные реформы и преобразования, изменившие ход истории. Понимайте суть политических и социальных изменений.</p>
+                <h3>Реформы, что изменили историю</h3>
+                <p>Крупные преобразования государств. Какие решения изменили ход истории и почему они важны?</p>
             </div>
 
             <div class="section-card">
                 <div class="section-emoji">🛰️</div>
-                <h3>Техника</h3>
-                <p>Современная и историческая военная техника. Самолеты, танки, корабли - все с подробными характеристиками.</p>
+                <h3>Техника и вооружение</h3>
+                <p>Самолеты, танки, корабли разных эпох. Характеристики, история создания, фото и интересные факты.</p>
             </div>
 
             <div class="section-card">
                 <div class="section-emoji">🔎</div>
-                <h3>Поиск</h3>
-                <p>Быстрый поиск по всем разделам. Найдите нужную информацию за секунды используя мощный поисковик.</p>
+                <h3>Быстрый поиск</h3>
+                <p>Нужна информация? Найди её за секунду. Поиск по всем разделам работает мгновенно и точно.</p>
             </div>
 
             <div class="section-card">
                 <div class="section-emoji">📝</div>
-                <h3>Заметки</h3>
-                <p>Создавайте и сохраняйте личные заметки. Организуйте свое обучение и отслеживайте прогресс.</p>
+                <h3>Сохраняй любимое</h3>
+                <p>Создай свою коллекцию интересных фактов и материалов. Заметки всегда с тобой, когда нужны.</p>
             </div>
 
             <div class="section-card">
                 <div class="section-emoji">▶️</div>
-                <h3>Лента</h3>
-                <p>Персонализированная лента с рекомендациями. Получайте интересный контент на основе ваших предпочтений.</p>
+                <h3>Персональная лента</h3>
+                <p>Каждый день получай контент, который тебе точно интересен. Бот учится твоим предпочтениям.</p>
             </div>
 
             <div class="section-card">
                 <div class="section-emoji">🏠</div>
-                <h3>Личный кабинет</h3>
-                <p>Статистика, графики активности, streak, уровни, рекомендации. Отслеживайте свой прогресс в обучении.</p>
+                <h3>Твой прогресс</h3>
+                <p>Графики, уровни, активные дни, статистика. Смотри, как ты развиваешься и что нужно улучшить.</p>
             </div>
         </div>
 
         <!-- Возможности бота -->
         <div class="features-section">
-            <h2>✨ Ключевые возможности</h2>
+            <h2>🚀 Как это работает?</h2>
             <div class="feature-grid">
                 <div class="feature-box">
-                    <div class="feature-icon">📊</div>
-                    <h4>Статистика</h4>
-                    <p>Подробные графики активности и анализ прогресса обучения</p>
-                </div>
-
-                <div class="feature-box">
-                    <div class="feature-icon">⭐</div>
-                    <h4>Уровни и рейтинг</h4>
-                    <p>Система уровней, активные streak, рейтинг пользователей</p>
+                    <div class="feature-icon">💬</div>
+                    <h4>Просто написать</h4>
+                    <p>Откройте бота в Telegram и начните. Интерфейс интуитивный, всё просто и понятно</p>
                 </div>
 
                 <div class="feature-box">
                     <div class="feature-icon">🎯</div>
-                    <h4>Рекомендации</h4>
-                    <p>Персональные рекомендации на основе ваших интересов</p>
+                    <h4>Выбери интересное</h4>
+                    <p>11 разделов на любой вкус. История, техника, личности, битвы - выбирай что тебя привлекает</p>
                 </div>
 
                 <div class="feature-box">
-                    <div class="feature-icon">💾</div>
-                    <h4>Заметки</h4>
-                    <p>Сохраняйте важные отрывки и создавайте личные справочники</p>
+                    <div class="feature-icon">📚</div>
+                    <h4>Узнавай новое</h4>
+                    <p>Каждый день свежий контент и интересные факты. Образование становится привычкой</p>
                 </div>
 
                 <div class="feature-box">
-                    <div class="feature-icon">👥</div>
-                    <h4>Интеграция в чаты</h4>
-                    <p>Интегрируйте бота в групповые чаты для совместного обучения</p>
+                    <div class="feature-icon">⭐</div>
+                    <h4>Зарабатывай уровни</h4>
+                    <p>Система достижений и уровней мотивирует продолжать. Показывай свой прогресс друзьям</p>
                 </div>
 
                 <div class="feature-box">
-                    <div class="feature-icon">🔔</div>
-                    <h4>Рассылки</h4>
-                    <p>Настраивайте рассылки контента на удобное вам время</p>
-                </div>
-            </div>
-        </div>
-
-        <!-- Статистика -->
-        <div class="stats">
-            <h2>📈 По цифрам</h2>
-            <div class="stat-grid">
-                <div class="stat-box">
-                    <div class="stat-number">11+</div>
-                    <div class="stat-label">Основных разделов</div>
+                    <div class="feature-icon">🌟</div>
+                    <h4>Соревнуйся</h4>
+                    <p>Интегрируй бота в чат с друзьями и соревнуйтесь. Кто больше узнает? Кто первый дойдет до вершины?</p>
                 </div>
 
-                <div class="stat-box">
-                    <div class="stat-number">30+</div>
-                    <div class="stat-label">Единиц техники</div>
-                </div>
-
-                <div class="stat-box">
-                    <div class="stat-number">100+</div>
-                    <div class="stat-label">Исторических событий</div>
-                </div>
-
-                <div class="stat-box">
-                    <div class="stat-number">∞</div>
-                    <div class="stat-label">Часов обучения</div>
+                <div class="feature-box">
+                    <div class="feature-icon">💪</div>
+                    <h4>Наслаждайся процессом</h4>
+                    <p>Обучение через игру и соревнование. Это не скучное учебник, это интересное приключение</p>
                 </div>
             </div>
         </div>
