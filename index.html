@@ -103,7 +103,7 @@
         .sections-grid {
             display: grid;
             grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-            gap: 30px;
+            gap: 25px;
             margin-bottom: 50px;
         }
 
@@ -113,22 +113,150 @@
             -webkit-backdrop-filter: blur(20px);
             border-radius: 20px;
             padding: 30px;
-            border: 1px solid rgba(100, 200, 255, 0.2);
-            transition: all 0.3s;
+            border: 2px solid rgba(100, 200, 255, 0.3);
+            transition: all 0.3s ease;
             cursor: pointer;
-            will-change: transform;
+            will-change: auto;
+            position: relative;
+            overflow: auto;
+            outline: none;
+            -webkit-tap-highlight-color: transparent;
+            user-select: none;
+        }
+
+        .section-card::before {
+            display: none;
+        }
+
+        .section-card:hover::before {
+            display: none;
         }
 
         .section-card:hover {
-            transform: translateY(-8px);
             background: rgba(30, 40, 70, 0.7);
             border-color: rgba(100, 200, 255, 0.5);
-            box-shadow: 0 20px 40px rgba(100, 200, 255, 0.15);
+            box-shadow: 0 10px 25px rgba(100, 200, 255, 0.1);
+        }
+
+        /* Стили для расширенной карточки */
+        .section-card.expanded {
+            background: linear-gradient(135deg, rgba(30, 40, 70, 0.95) 0%, rgba(40, 60, 100, 0.85) 100%);
+            box-shadow: 0 10px 30px rgba(100, 200, 255, 0.15);
+            border-color: rgba(100, 200, 255, 0.6);
+            overflow: visible;
+            animation: expandCardContent 1s cubic-bezier(0.32, 0.67, 0.35, 1) forwards;
+            max-height: 700px;
+            will-change: max-height, background, box-shadow, border-color;
+        }
+
+        .section-card.closing {
+            animation: collapseCardContent 1s cubic-bezier(0.32, 0.67, 0.35, 1) forwards;
+            will-change: max-height, background, box-shadow, border-color;
+        }
+
+        @keyframes expandCardContent {
+            0% {
+                max-height: 250px;
+            }
+            100% {
+                max-height: 700px;
+            }
+        }
+
+        @keyframes collapseCardContent {
+            0% {
+                max-height: 700px;
+            }
+            100% {
+                max-height: 250px;
+            }
+        }
+
+        .section-card.expanded .section-card-content {
+            display: block;
+            animation: slideDown 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+            margin-top: 20px;
+        }
+
+        .section-card.closing .section-card-content {
+            animation: slideUp 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                max-height: 0;
+            }
+            to {
+                opacity: 1;
+                max-height: 400px;
+            }
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 1;
+                max-height: 400px;
+            }
+            to {
+                opacity: 0;
+                max-height: 0;
+            }
+        }
+
+        .section-card-content {
+            display: none;
+            border-top: 1px solid rgba(100, 200, 255, 0.3);
+            padding-top: 20px;
+            margin-top: 0;
+            max-height: 400px;
+            overflow: auto;
+        }
+
+        .section-card-content p {
+            color: #b0b0d0;
+            line-height: 1.8;
+            margin-bottom: 10px;
+            font-size: 0.95em;
         }
 
         .section-emoji {
             font-size: 3em;
             margin-bottom: 15px;
+            transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+            display: inline-block;
+            animation: float 3s ease-in-out infinite;
+        }
+
+        .section-card:hover .section-emoji {
+            font-size: 3.3em;
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 10px rgba(100, 200, 255, 0.5));
+        }
+
+        .section-card.expanded .section-emoji {
+            font-size: 3.5em;
+            animation: none;
+        }
+
+        .section-card.closing .section-emoji {
+            animation: emojiShrink 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes emojiShrink {
+            from {
+                font-size: 3.5em;
+                transform: scale(1);
+            }
+            to {
+                font-size: 3em;
+                transform: scale(1);
+            }
+        }
+            to {
+                font-size: 3em;
+                transform: scale(1);
+            }
         }
 
         .section-card h3 {
@@ -138,12 +266,46 @@
             -webkit-background-clip: text;
             -webkit-text-fill-color: transparent;
             background-clip: text;
+            transition: all 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+        }
+
+        .section-card.expanded h3 {
+            font-size: 1.6em;
+        }
+
+        .section-card.closing h3 {
+            animation: h3Shrink 0.9s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+        }
+
+        @keyframes h3Shrink {
+            from {
+                font-size: 1.6em;
+            }
+            to {
+                font-size: 1.5em;
+            }
+        }
+            }
         }
 
         .section-card p {
             color: #b0b0d0;
             line-height: 1.6;
             font-size: 1em;
+            transition: all 0.6s ease;
+        }
+
+        .section-card.closing p {
+            animation: textShrink 0.6s ease-in forwards;
+        }
+
+        @keyframes textShrink {
+            from {
+                opacity: 1;
+            }
+            to {
+                opacity: 1;
+            }
         }
 
         .features-section {
@@ -176,12 +338,37 @@
             border-radius: 25px;
             padding: 20px;
             background: rgba(30, 40, 70, 0.4);
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+            border: none;
+        }
+
+        .feature-box::after {
+            display: none;
+        }
+
+        .feature-box:hover::after {
+            display: none;
+        }
+
+        .feature-box:hover {
+            background: rgba(40, 60, 100, 0.5);
+            box-shadow: 0 8px 20px rgba(100, 200, 255, 0.1);
         }
 
         .feature-icon {
             font-size: 2.5em;
             margin-bottom: 15px;
+            transition: all 0.3s ease;
+            animation: float 3s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        .feature-box:hover .feature-icon {
+            font-size: 2.8em;
+            transform: scale(1.15);
+            filter: drop-shadow(0 0 10px rgba(100, 200, 255, 0.6));
         }
 
         .feature-box h4 {
@@ -211,13 +398,23 @@
             color: #e0e0e0;
             padding: 25px;
             border-radius: 15px;
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .tech-card::before {
+            display: none;
+        }
+
+        .tech-card:hover::before {
+            display: none;
         }
 
         .tech-card:hover {
-            background: rgba(40, 50, 90, 0.6);
+            background: rgba(40, 60, 110, 0.5);
             border-color: rgba(100, 200, 255, 0.5);
-            box-shadow: 0 15px 35px rgba(100, 200, 255, 0.1);
+            box-shadow: 0 10px 25px rgba(100, 200, 255, 0.1);
         }
 
         .tech-card h4 {
@@ -267,12 +464,23 @@
             color: #64c8ff;
             border-radius: 15px;
             border: 1px solid rgba(100, 200, 255, 0.3);
-            transition: all 0.3s;
+            transition: all 0.3s ease;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .stat-box::before {
+            display: none;
+        }
+
+        .stat-box:hover::before {
+            display: none;
         }
 
         .stat-box:hover {
-            background: rgba(100, 200, 255, 0.15);
-            border-color: rgba(100, 200, 255, 0.6);
+            background: rgba(100, 200, 255, 0.12);
+            border-color: rgba(100, 200, 255, 0.5);
+            box-shadow: 0 10px 25px rgba(100, 200, 255, 0.1);
         }
 
         .stat-number {
@@ -1309,6 +1517,206 @@
                 backdrop-filter: none !important;
             }
         }
+
+        /* Новые красивые анимации */
+        @keyframes shimmer {
+            0% {
+                background-position: -1000px 0;
+            }
+            100% {
+                background-position: 1000px 0;
+            }
+        }
+
+        @keyframes colorShift {
+            0% {
+                filter: hue-rotate(0deg);
+            }
+            50% {
+                filter: hue-rotate(10deg);
+            }
+            100% {
+                filter: hue-rotate(0deg);
+            }
+        }
+
+        @keyframes moveInFromTop {
+            from {
+                opacity: 0;
+                transform: translateY(-40px) rotateX(90deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg);
+            }
+        }
+
+        @keyframes moveInFromBottom {
+            from {
+                opacity: 0;
+                transform: translateY(40px) rotateX(-90deg);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0) rotateX(0deg);
+            }
+        }
+
+        @keyframes liquidGlow {
+            0%, 100% {
+                box-shadow: 0 0 30px rgba(100, 200, 255, 0.4);
+            }
+            50% {
+                box-shadow: 0 0 60px rgba(100, 200, 255, 0.8), 0 0 90px rgba(255, 100, 224, 0.4);
+            }
+        }
+
+        /* Улучшенные текстовые эффекты */
+        .section-card h3 {
+            transition: all 0.4s ease;
+        }
+
+        .section-card:hover h3 {
+            color: #ff64e0;
+            text-shadow: 0 0 20px rgba(255, 100, 224, 0.5);
+        }
+
+        .feature-box h4 {
+            transition: all 0.4s ease;
+        }
+
+        .feature-box:hover h4 {
+            text-shadow: 0 0 15px rgba(100, 200, 255, 0.8);
+            font-size: 1.3em;
+        }
+
+        .tech-card h4 {
+            transition: all 0.4s ease;
+        }
+
+        .tech-card:hover h4 {
+            color: #ff64e0;
+            font-size: 1.4em;
+        }
+
+        .stat-number {
+            transition: all 0.4s ease;
+        }
+
+        .stat-box:hover .stat-number {
+            font-size: 2.8em;
+            animation: liquidGlow 2s ease-in-out infinite;
+        }
+
+        /* Улучшенная кнопка */
+        .btn-primary {
+            transition: all 0.5s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+            z-index: 1;
+        }
+
+        .btn-primary::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: linear-gradient(45deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+            border-radius: 60px;
+            opacity: 0;
+            transition: opacity 0.5s;
+            pointer-events: none;
+        }
+
+        .btn-primary:hover::after {
+            opacity: 1;
+            animation: shimmer 0.6s ease-in-out;
+        }
+
+        /* Героические статы с пульсацией */
+        .hero-stat {
+            transition: all 0.4s cubic-bezier(0.34, 1.56, 0.64, 1);
+            position: relative;
+        }
+
+        .hero-stat:hover {
+            animation: liquidGlow 2s ease-in-out infinite;
+        }
+
+        .hero-stat-number {
+            transition: all 0.4s ease;
+        }
+
+        .hero-stat:hover .hero-stat-number {
+            transform: scale(1.15) rotateZ(5deg);
+            animation: colorShift 1.5s ease-in-out;
+        }
+
+        /* Эффект для больших заголовков */
+        h1 {
+            letter-spacing: 0.5px;
+        }
+
+        .section-title, .subsection-title {
+            position: relative;
+            display: inline-block;
+        }
+
+        .section-title::after, .subsection-title::after {
+            content: '';
+            position: absolute;
+            bottom: -10px;
+            left: 0;
+            width: 0;
+            height: 3px;
+            background: linear-gradient(135deg, #64c8ff 0%, #ff64e0 100%);
+            transition: width 0.6s cubic-bezier(0.34, 1.56, 0.64, 1);
+        }
+
+        .section-title.in-view::after, .subsection-title.in-view::after {
+            width: 100%;
+        }
+
+        /* Плавное появление картинок и текста */
+        .section-card p {
+            transition: all 0.4s ease;
+            opacity: 0.9;
+        }
+
+        .section-card:hover p {
+            opacity: 1;
+            color: #e0e0e0;
+        }
+
+        .feature-box p {
+            transition: all 0.4s ease;
+        }
+
+        .feature-box:hover p {
+            color: #64c8ff;
+            font-weight: 500;
+        }
+
+        .tech-card p {
+            transition: all 0.4s ease;
+            opacity: 0.85;
+        }
+
+        .tech-card:hover p {
+            opacity: 1;
+            color: #64c8ff;
+        }
+
+        /* Добавляем глубину */
+        .features-section, .stats {
+            box-shadow: 0 10px 40px rgba(0, 0, 0, 0.3), inset 0 0 30px rgba(100, 200, 255, 0.05);
+            transition: all 0.4s ease;
+        }
+
+        .features-section:hover, .stats:hover {
+            box-shadow: 0 15px 60px rgba(100, 200, 255, 0.15), inset 0 0 40px rgba(100, 200, 255, 0.08);
+        }
     </style>
 </head>
 <body>
@@ -1356,217 +1764,270 @@
                 <div class="section-emoji">📅</div>
                 <h3>Даты и события</h3>
                 <p>Ключевые моменты истории с точными датами. От древних цивилизаций до наших дней. Смотри всю ленту истории в одном месте.</p>
+                <div class="section-card-content">
+                    <p><strong>Дополнительно:</strong> Полная хронология событий с описанием причин и последствий каждого исторического момента. Интерактивная временная шкала позволяет легко ориентироваться в истории.</p>
+                    <p>🔍 Кликни, чтобы свернуть</p>
+                </div>
             </div>
 
             <div class="section-card">
                 <div class="section-emoji">📘</div>
                 <h3>Термины и определения</h3>
                 <p>Не понимаешь исторические термины? Найди определение любого слова. База знаний для быстрого поиска информации.</p>
+                <div class="section-card-content">
+                    <p><strong>Дополнительно:</strong> Словарь содержит более 500 исторических терминов с примерами их использования. Быстрый поиск по алфавиту и категориям помогает найти нужную информацию за секунды.</p>
+                    <p>🔍 Кликни, чтобы свернуть</p>
+                </div>
             </div>
 
             <div class="section-card">
                 <div class="section-emoji">⚔️</div>
                 <h3>Военные события</h3>
                 <p>От древности до эпохальных битв. Разберись в стратегиях командующих и причинах исходов сражений.</p>
+                <div class="section-card-content">
+                    <p><strong>Дополнительно:</strong> Описания всех крупных сражений с тактическими схемами, информацией о полководцах и стратегических решениях. Узнай, как они изменили ход истории.</p>
+                    <p>🔍 Кликни, чтобы свернуть</p>
+                </div>
             </div>
 
             <div class="section-card">
                 <div class="section-emoji">👤</div>
                 <h3>Великие личности</h3>
                 <p>Цари, полководцы, ученые, деятели искусства. Вдохновляющие истории людей, которые изменили мир.</p>
+                <div class="section-card-content">
+                    <p><strong>Дополнительно:</strong> Подробные биографии выдающихся исторических личностей с фотографиями, интересными фактами и их вкладом в историю. Откройте для себя достижения великих людей.</p>
+                    <p>🔍 Кликни, чтобы свернуть</p>
+                </div>
             </div>
 
             <div class="section-card">
                 <div class="section-emoji">🎖️</div>
                 <h3>Награды и ордена</h3>
                 <p>История почестей и наград. Какие медали давали за подвиги? Как устроена система признания?</p>
+                <div class="section-card-content">
+                    <p><strong>Дополнительно:</strong> Каталог всех российских наград с описанием условий их вручения, истории создания и знаменитых получателей. Изучите символику и значение каждой награды.</p>
+                    <p>🔍 Кликни, чтобы свернуть</p>
+                </div>
             </div>
 
             <div class="section-card">
-                <div class="section-emoji">🏛️</div>
-                <h3>Реформы, что изменили историю</h3>
-                <p>Крупные преобразования государств. Какие решения изменили ход истории и почему они важны?</p>
+                <div class="section-emoji">🎭</div>
+                <h3>Культура</h3>
+                <p>Литература, живопись, театр, музыка и архитектура. Открой для себя богатое культурное наследие России через века и эпохи.</p>
+                <div class="section-card-content">
+                    <p><strong>Дополнительно:</strong> Подробный обзор русской культуры с произведениями великих авторов, художников и композиторов. Узнай о шедеврах архитектуры и их исторический контекст.</p>
+                    <p>🔍 Кликни, чтобы свернуть</p>
+                </div>
+            </div>
+            
+            <div class="section-card">
+                <div class="section-emoji">🗺️</div>
+                <h3>Карты</h3>
+                <p>Исторические карты России, изменение границ и территорий. Карты ВОВ, стратегические операции и перемещения фронтов. Визуализируй историю.</p>
+                <div class="section-card-content">
+                    <p><strong>Дополнительно:</strong> Интерактивные исторические карты показывают эволюцию Российского государства. Детальные карты Великой Отечественной войны с поэтапным движением фронтов и операций.</p>
+                    <p>🔍 Кликни, чтобы свернуть</p>
+                </div>
+            </div>
+            
+            <div class="section-card">
+                <div class="section-emoji">📚</div>
+                <h3>Библиотека</h3>
+                <p>Архив исторических файлов и материалов по истории России. Сборник документов, исследований и источников для углублённого изучения.</p>
+                <div class="section-card-content">
+                    <p><strong>Дополнительно:</strong> Обширная коллекция исторических документов, исследований и научных статей. Доступ к первоисточникам и современным исследованиям истории России.</p>
+                    <p>🔍 Кликни, чтобы свернуть</p>
+                </div>
             </div>
 
+            <div class="section-card">
+                <div class="section-emoji">📊</div>
+                <h3>Таблицы</h3>
+                <p>История России в таблицах: хронологии, сравнения правителей, основные события. Структурированная информация для быстрого усвоения.</p>
+                <div class="section-card-content">
+                    <p><strong>Дополнительно:</strong> Систематизированная информация о правителях, династиях, войнах и реформах. Сравнительные таблицы помогают анализировать периоды и события.</p>
+                    <p>🔍 Кликни, чтобы свернуть</p>
+                </div>
+            </div>
             <div class="section-card">
                 <div class="section-emoji">🛰️</div>
                 <h3>Техника и вооружение</h3>
                 <p>Самолеты, танки, корабли разных эпох. Характеристики, история создания, фото и интересные факты.</p>
+                <div class="section-card-content">
+                    <p><strong>Дополнительно:</strong> Подробный каталог боевой техники с характеристиками, фотографиями и историей создания. Сравнивай характеристики разных машин и узнай их роль в истории.</p>
+                    <p>🔍 Кликни, чтобы свернуть</p>
+                </div>
             </div>
 
             <div class="section-card">
                 <div class="section-emoji">🔎</div>
                 <h3>Быстрый поиск</h3>
                 <p>Нужна информация? Найди её за секунду. Поиск по всем разделам работает мгновенно и точно.</p>
+                <div class="section-card-content">
+                    <p><strong>Дополнительно:</strong> Мощный поисковый движок индексирует всё содержимое бота. Используй фильтры по периодам, категориям и типам информации для точного поиска.</p>
+                    <p>🔍 Кликни, чтобы свернуть</p>
+                </div>
             </div>
 
             <div class="section-card">
                 <div class="section-emoji">📝</div>
                 <h3>Сохраняй любимое</h3>
                 <p>Создай свою коллекцию интересных фактов и материалов. Заметки всегда с тобой, когда нужны.</p>
+                <div class="section-card-content">
+                    <p><strong>Дополнительно:</strong> Система закладок позволяет сохранять интересующие тебя статьи и факты. Создавай собственные списки для подготовки к экзаменам или просто для развития.</p>
+                    <p>🔍 Кликни, чтобы свернуть</p>
+                </div>
             </div>
-
-            <div class="section-card">
-                <div class="section-emoji">▶️</div>
-                <h3>Персональная лента</h3>
-                <p>Каждый день получай контент, который тебе точно интересен. Бот учится твоим предпочтениям.</p>
-            </div>
-
+            
             <div class="section-card">
                 <div class="section-emoji">🏠</div>
                 <h3>Твой прогресс</h3>
                 <p>Графики, уровни, активные дни, статистика. Смотри, как ты развиваешься и что нужно улучшить.</p>
-            </div>
-        </div>
-
-        <!-- Возможности бота -->
-        <div class="features-section animate-on-scroll">
-            <h2 style="text-align: center;">Как это работает?</h2>
-            <div class="feature-grid">
-                <div class="feature-box">
-                    <div class="feature-icon">💬</div>
-                    <h4>Просто написать</h4>
-                    <p>Откройте бота в Telegram и начните. Интерфейс интуитивный, всё просто и понятно</p>
-                </div>
-
-                <div class="feature-box">
-                    <div class="feature-icon">🎯</div>
-                    <h4>Выбери интересное</h4>
-                    <p>7 разделов на любой вкус. История, техника, личности, битвы - выбирай, что тебя привлекает</p>
-                </div>
-
-                <div class="feature-box">
-                    <div class="feature-icon">📚</div>
-                    <h4>Узнавай новое</h4>
-                    <p>Каждый день свежий контент и интересные факты. Образование становится привычкой</p>
-                </div>
-
-                <div class="feature-box">
-                    <div class="feature-icon">⭐</div>
-                    <h4>Зарабатывай уровни</h4>
-                    <p>Система достижений и уровней мотивирует продолжать. Показывай свой прогресс друзьям</p>
-                </div>
-
-                <div class="feature-box">
-                    <div class="feature-icon">🌟</div>
-                    <h4>Соревнуйся</h4>
-                    <p>Интегрируй бота в чат с друзьями и открывайте новые знания вместе. Кто больше узнает? Кто первым дойдет до вершины?</p>
+                <div class="section-card-content">
+                    <p><strong>Дополнительно:</strong> Персональная статистика показывает твой прогресс обучения: количество прочитанных материалов, время обучения, пройденные тесты и достижения. Мотивируйся графиками успеха!</p>
+                    <p>🔍 Кликни, чтобы свернуть</p>
                 </div>
             </div>
-        </div>
-
-        <!-- CTA -->
-        <div class="features-section animate-on-scroll" style="text-align: center; background: rgba(100, 200, 255, 0.15); border: 1.5px solid rgba(100, 200, 255, 0.4);">
-            <h2 style="margin-bottom: 20px;">Готовы начать?</h2>
-            <p style="color: #b0b0d0; font-size: 1.1em; margin-bottom: 30px;">Присоединяйтесь к пользователям, которые уже изучают историю с нашим ботом.</p>
-            <a href="https://t.me/Hist0ry_of_Russia_bot" class="btn-primary">Запустить в Telegram</a>
         </div>
     </div>
 
-    <!-- Footer -->
-    <footer>
-        <div class="footer-content">
-            <h3>Россия. История, которой мы гордимся.</h3>
-            <p>Образовательный Telegram-бот для изучения истории, техники и выдающихся личностей</p>
-            <p>© 2025 История и Техника. Все права защищены.</p>
-            <div class="social-links">
-                <a href="https://t.me/Hist0ry0fRussia">Telegram</a>
-                <a href="his1oryofrussia@gmail.com">Почта</a>
-            </div>
-        </div>
-    </footer>
-
     <script>
-        // Проверяем мобильное устройство
-        const isMobile = window.innerWidth <= 768;
-
-        // Оптимизированный Intersection Observer для мобильных
+        // Плавная прокрутка и анимация элементов
         const observerOptions = {
-            threshold: isMobile ? 0.15 : 0.1,
-            rootMargin: isMobile ? '0px 0px -30px 0px' : '0px 0px -50px 0px'
+            threshold: 0.1,
+            rootMargin: '0px 0px -100px 0px'
         };
 
-        const observer = new IntersectionObserver((entries) => {
-            requestAnimationFrame(() => {
-                entries.forEach(entry => {
-                    if (entry.isIntersecting) {
-                        entry.target.classList.add('in-view');
-                        observer.unobserve(entry.target);
-                    }
-                });
+        const observer = new IntersectionObserver(function(entries) {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    observer.unobserve(entry.target);
+                }
             });
         }, observerOptions);
 
-        // Добавляем анимации к элементам при загрузке
-        window.addEventListener('load', () => {
-            // Карточки разделов с cascading задержкой
-            document.querySelectorAll('.section-card').forEach((card, index) => {
-                card.classList.add('animate-on-scroll');
+        // Наблюдаем за элементами с классом animate-on-scroll
+        document.querySelectorAll('.animate-on-scroll, .section-card, .feature-box, .section-title, .subsection-title, .features-section, .stats, footer').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Добавляем классы анимации к карточкам
+        document.querySelectorAll('.section-card').forEach((card, index) => {
+            card.classList.add('animate-on-scroll');
+            card.style.animationDelay = (index * 0.1) + 's';
+        });
+
+        document.querySelectorAll('.feature-box').forEach((box, index) => {
+            box.classList.add('animate-on-scroll');
+            box.style.animationDelay = (index * 0.1) + 's';
+        });
+
+        // Функция для завершения анимации закрытия
+        function finishClosingAnimation(card) {
+            card.classList.remove('expanded');
+            card.classList.remove('closing');
+        }
+
+        // Функция расширения/сворачивания карточек
+        document.querySelectorAll('.section-card').forEach(card => {
+            card.style.cursor = 'pointer';
+            
+            card.addEventListener('click', function(e) {
+                // Не открываем если кликнули на ссылку
+                if (e.target.tagName === 'A') return;
                 
-                // На мобильных уменьшаем задержку
-                const delay = isMobile ? (index * 0.08) : (index * 0.12);
-                card.style.setProperty('--animation-delay', delay + 's');
-                card.style.animationDelay = delay + 's';
-                observer.observe(card);
-            });
-
-            // Блоки возможностей
-            document.querySelectorAll('.feature-box').forEach((box, index) => {
-                box.classList.add('animate-on-scroll');
-                box.style.setProperty('--delay', index * 0.1 + 's');
-                observer.observe(box);
-            });
-
-            // Секции с возможностями
-            document.querySelectorAll('.features-section').forEach(section => {
-                if (isMobile) {
-                    // На мобильных сразу показываем без анимации
-                    section.classList.add('in-view');
+                const isExpanded = this.classList.contains('expanded');
+                
+                // Если карточка расширена, закрываем её плавно
+                if (isExpanded) {
+                    this.classList.add('closing');
+                    
+                    // Используем animationend для синхронизации с CSS
+                    const handleAnimationEnd = () => {
+                        finishClosingAnimation(this);
+                        this.removeEventListener('animationend', handleAnimationEnd);
+                    };
+                    this.addEventListener('animationend', handleAnimationEnd);
                 } else {
-                    section.classList.add('animate-on-scroll');
-                    observer.observe(section);
-                }
-            });
-
-            // Заголовки разделов
-            document.querySelectorAll('.section-title').forEach(title => {
-                title.classList.add('animate-on-scroll');
-                observer.observe(title);
-            });
-
-            // Footer
-            const footer = document.querySelector('footer');
-            if (footer) {
-                if (isMobile) {
-                    footer.classList.add('in-view');
-                } else {
-                    footer.classList.add('animate-on-scroll');
-                    observer.observe(footer);
-                }
-            }
-        });
-
-        // Smooth scroll для якорей
-        document.querySelectorAll('a[href^="#"]').forEach(anchor => {
-            anchor.addEventListener('click', function (e) {
-                e.preventDefault();
-                const target = document.querySelector(this.getAttribute('href'));
-                if (target) {
-                    target.scrollIntoView({
-                        behavior: 'smooth',
-                        block: 'start'
+                    // Закрываем все открытые карточки
+                    document.querySelectorAll('.section-card.expanded').forEach(expandedCard => {
+                        if (expandedCard !== this) {
+                            expandedCard.classList.add('closing');
+                            
+                            const handleAnimationEnd = () => {
+                                finishClosingAnimation(expandedCard);
+                                expandedCard.removeEventListener('animationend', handleAnimationEnd);
+                            };
+                            expandedCard.addEventListener('animationend', handleAnimationEnd);
+                        }
                     });
+                    
+                    // Открываем текущую карточку
+                    this.classList.add('expanded');
                 }
             });
         });
 
-        // Отключаем глобальные фильтры на мобильных для производительности
-        if (isMobile) {
-            // Убираем фоновые градиенты на очень слабых устройствах
-            if (window.innerWidth < 480) {
-                document.body.style.background = '#0f0f1e';
+        // Закрываем карточку при клике вне неё
+        document.addEventListener('click', function(e) {
+            if (!e.target.closest('.section-card')) {
+                document.querySelectorAll('.section-card.expanded').forEach(card => {
+                    card.classList.add('closing');
+                    
+                    const handleAnimationEnd = () => {
+                        finishClosingAnimation(card);
+                        card.removeEventListener('animationend', handleAnimationEnd);
+                    };
+                    card.addEventListener('animationend', handleAnimationEnd);
+                });
             }
+        });
+
+        // Анимация цифр при загрузке страницы
+        let animationCompleted = false;
+        const animateNumbers = () => {
+            if (animationCompleted) return;
+            
+            document.querySelectorAll('.hero-stat-number').forEach(el => {
+                const text = el.innerText;
+                if (text === '∞') return;
+                
+                const finalValue = parseInt(text.replace(/\D/g, ''));
+                const isPlus = text.includes('+');
+                let current = 0;
+                // Для больших чисел делаем больший шаг, для малых - шаг 1
+                const increment = Math.max(1, Math.ceil(finalValue / 50));
+                
+                const counter = setInterval(() => {
+                    current += increment;
+                    if (current >= finalValue) {
+                        el.innerText = finalValue + (isPlus ? '+' : '');
+                        clearInterval(counter);
+                    } else {
+                        el.innerText = current + (isPlus ? '+' : '');
+                    }
+                }, 50);
+            });
+            
+            animationCompleted = true;
+        };
+
+        // Запускаем анимацию цифр при загрузке страницы (после небольшой задержки для красоты)
+        window.addEventListener('load', () => {
+            setTimeout(animateNumbers, 500);
+        });
+
+        // Также запускаем при видимости хэро секции (на случай, если страница загружена и скроллена)
+        const heroStats = document.querySelector('.hero-stats');
+        if (heroStats) {
+            const heroObserver = new IntersectionObserver(entries => {
+                if (entries[0].isIntersecting && !animationCompleted) {
+                    animateNumbers();
+                    heroObserver.unobserve(entries[0].target);
+                }
+            }, { threshold: 0.5 });
+            
+            heroObserver.observe(heroStats);
         }
     </script>
-</body>
-</html>
